@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Clima en Querétaro (sin API key)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            transition: transform 0.3s ease;
+        }
+
+        h1:hover {
+            transform: scale(1.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        #weather {
+            margin-top: 20px;
+            font-style: italic;
+            text-align: center;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="title">Clima en Querétaro</h1>
+    <button id="getWeather">Obtener Clima Actual</button>
+    <p id="weather">Aquí aparecerá la información del clima...</p>
+
+    <script>
+        const title = document.getElementById('title');
+        const button = document.getElementById('getWeather');
+        const weather = document.getElementById('weather');
+
+        title.addEventListener('click', () => {
+            title.style.color = title.style.color === 'purple' ? '#333' : 'purple';
+        });
+
+        // Mostrar última consulta guardada
+        window.addEventListener('load', () => {
+            const lastWeather = localStorage.getItem('lastWeather');
+            if (lastWeather) {
+                weather.textContent = lastWeather;
+            }
+        });
+
+        async function fetchWeather() {
+            try {
+                const response = await fetch('https://wttr.in/Queretaro?format=j1');
+                const data = await response.json();
+                const current = data.current_condition[0];
+                const temp = current.temp_C;
+                const condition = current.weatherDesc[0].value;
+                const feelsLike = current.FeelsLikeC;
+
+                const weatherInfo = `Actualmente en Querétaro: ${temp}°C, ${condition}, sensación térmica ${feelsLike}°C.`;
+                weather.textContent = weatherInfo;
+                localStorage.setItem('lastWeather', weatherInfo);
+            } catch (error) {
+                weather.textContent = 'Error al obtener la información del clima.';
+                console.error('Hubo un problema:', error);
+            }
+        }
+
+        button.addEventListener('click', fetchWeather);
+    </script>
+</body>
+</html>
