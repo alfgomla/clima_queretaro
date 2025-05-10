@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>clima en Querétaro</title>
+    <title>Clima en Querétaro (sin API key)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,15 +46,34 @@
             text-align: center;
             max-width: 400px;
         }
+
+        .barra-footer{        
+            text-align: center;
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-top: 30px;
+            padding-bottom: 10px;
+        }
+        #clock {
+            font: bold 24px san-serif;
+            background-color: #daeb97;
+            border: solid #000000 2px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 
-    <h1 id="title">Hola familia...</h1>
-    <h2>El clima en Querétaro para hoy:</h2>
+    <h1 id="title">Hola family...</h1>
+    <h2 id="title">¿Cómo están hoy?</h2>
+    <span id="clock"></span>
     <button id="getWeather">Obtener Clima Actual</button>
-    <p id="weather">Aquí aparecerá la información del clima...</p>
-
+    <p id="weather">..............</p>
+    <img class="imagen1" src="imagenes/imagen3.gif" height="300px">
+    <div class="barra-footer">
+        &copy; Derechos Reservados - 2025
+        <p>Design - <a class="credit" href="https://alfgomla.github.io/alfgomla/" target="_blank">Alfgomla</a></p>
+    </div>
     <script>
         const title = document.getElementById('title');
         const button = document.getElementById('getWeather');
@@ -64,13 +83,16 @@
             title.style.color = title.style.color === 'purple' ? '#333' : 'purple';
         });
 
-        // Mostrar última consulta guardada
-        window.addEventListener('load', () => {
-            const lastWeather = localStorage.getItem('lastWeather');
-            if (lastWeather) {
-                weather.textContent = lastWeather;
-            }
-        });
+        function mostrarHora() {
+            let reloj = document.querySelector("#clock"); // Selecciona el elemento con id "clock"
+            let hora = new Date(); // Crea un nuevo objeto Date con la fecha y hora actuales
+            reloj.innerHTML = hora.toLocaleTimeString(); // Actualiza el contenido del elemento con la hora actual en formato local
+            setTimeout(mostrarHora, 1000);
+        }
+
+        // Llama a la función mostrarHora para iniciar el reloj
+
+        mostrarHora();
 
         async function fetchWeather() {
             try {
